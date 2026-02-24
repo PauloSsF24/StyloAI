@@ -1,20 +1,22 @@
 import { NextResponse } from "next/server";
-import { fetchWeather } from "@/services/weather.api";
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const city = searchParams.get("city");
-
-  if (!city) {
-    return NextResponse.json(
-      { error: "Cidade é obrigatória" },
-      { status: 400 }
-    );
-  }
-
+export async function GET() {
   try {
-    const weather = await fetchWeather(city);
-    return NextResponse.json(weather);
+    const city = "Tres Coracoes";
+    const apiKey = process.env.OPENWEATHER_API_KEY;
+
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+    );
+
+    const data = await res.json();
+
+    return NextResponse.json({
+      temperature: Math.round(data.main.temp),
+      city: data.name,
+      condition: data.weather[0].main,
+      icon: data.weather[0].icon,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: "Erro ao buscar clima" },

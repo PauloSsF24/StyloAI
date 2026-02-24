@@ -8,10 +8,12 @@ datasource db {
 }
 
 model Look {
-  id        String   @id @default(uuid())
-  nome      String
-  imagemUrl String
-  clima     String[]
-  ocasiao   String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  imageUrl    String
+  nome    String
+  clima     String   // cold | mild | hot
+  ocasiao    String   // casual | formal | work
+  lastUsedAt  DateTime?
+  rating      Int      @default(0)
+  createdAt   DateTime @default(now())
 }

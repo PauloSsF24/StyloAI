@@ -1,6 +1,6 @@
 # 👕 StyloAI - Seu Closet Inteligente
 
-![Ne]()js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![React](https://img.shields.io/badge/React-18-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma)

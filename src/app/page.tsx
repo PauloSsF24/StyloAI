@@ -102,7 +102,7 @@ export default function Home() {
         {looks.map((look) => (
           <div
             key={look.id}
-            className="min-w-[250px] h-[320px] bg-white rounded-2xl shadow-lg"
+            className="min-w-62.5 h-80 bg-white rounded-2xl shadow-lg"
           >
             <img
               src={look.imageUrl}

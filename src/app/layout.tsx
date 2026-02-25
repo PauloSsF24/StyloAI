@@ -1,3 +1,6 @@
+"use client";
+
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Poppins } from 'next/font/google'
@@ -11,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-br">
       <body className={poppins.className}>
-        {children}
+        <SessionProvider>{children}</SessionProvider>
         <Toaster position="top-right" richColors />
       </body>
     </html>

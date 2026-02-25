@@ -55,7 +55,6 @@ export default function Home() {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-purple-600">StyloAI</h1>
-        <div className="w-10 h-10 bg-purple-600 rounded-full" />
       </div>
 
       {/* WEATHER CARD */}

@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+  }
+
   try {
     const looks = await prisma.look.findMany({
-      orderBy: {
-        createdAt: "desc",
+      where: {
+        userEmail: session.user?.email!,
       },
     });
 
@@ -20,6 +28,26 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: "Não autenticado" },
+        { status: 401 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Usuário não encontrado" },
+        { status: 404 }
+      );
+    }
+
     const formData = await req.formData();
 
     const nome = formData.get("nome") as string;
@@ -38,10 +66,10 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(bytes);
 
     const fileName = `${Date.now()}-${file.name}`;
-    const path = `./public/uploads/${fileName}`;
+    const uploadDir = "./public/uploads";
+    const path = `${uploadDir}/${fileName}`;
 
     const fs = require("fs");
-    const uploadDir = "./public/uploads";
 
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
@@ -55,6 +83,7 @@ export async function POST(req: Request) {
         clima,
         ocasiao,
         imageUrl: `/uploads/${fileName}`,
+        userId: user.id,
       },
     });
 
@@ -79,13 +108,30 @@ export async function DELETE(req: Request) {
       );
     }
 
-    const look = await prisma.look.findUnique({
-      where: { id },
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
+    }
+
+    const look = await prisma.look.findFirst({
+      where: {
+        id,
+        userId: user.id,
+      },
     });
 
     if (!look) {
       return NextResponse.json(
-        { error: "Look não encontrado" },
+        { error: "Look não encontrado ou não pertence a você" },
         { status: 404 }
       );
     }

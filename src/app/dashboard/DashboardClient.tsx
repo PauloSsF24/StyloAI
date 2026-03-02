@@ -68,16 +68,16 @@ export default function DashboardClient() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-10">
+    <div className="min-h-screen bg-[#E7DBD0] p-10">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-10">
-          <h1 className="text-3xl font-bold text-purple-700">
+          <h1 className="text-3xl font-bold text-brand-primary">
             Meus Looks
           </h1>
 
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-purple-700 text-white px-5 py-2 rounded-xl hover:opacity-80 transition"
+            className="bg-brand-primary text-white px-5 py-2 rounded-xl hover:opacity-80 transition"
           >
             + Novo Look
           </button>

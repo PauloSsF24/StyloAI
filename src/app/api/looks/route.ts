@@ -11,9 +11,17 @@ export async function GET() {
   }
 
   try {
+    const user = await prisma.user.findUnique({
+      where: { email: session.user?.email! },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
+    }
+
     const looks = await prisma.look.findMany({
       where: {
-        userEmail: session.user?.email!,
+        userId: user.id,
       },
     });
 

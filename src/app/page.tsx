@@ -51,16 +51,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#EAEAEA] p-8">
-      {/* HEADER */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-purple-600">StyloAI</h1>
-      </div>
+    <main className="min-h-screen bg-[#E7DBD0] p-8">
 
       {/* WEATHER CARD */}
       <div className="mt-12 flex justify-center">
         {weather && (
-          <div className="bg-white shadow-xl rounded-3xl px-10 py-6 flex items-center gap-8">
+          <div className="bg-brand-surface shadow-xl rounded-3xl px-10 py-6 flex items-center gap-8">
             <div>
                 <img
                   src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
@@ -69,11 +65,11 @@ export default function Home() {
                 />
             </div>
 
-            <div className="text-4xl font-bold text-purple-700">
+            <div className="text-4xl font-bold text-brand-primary">
               {weather.temperature}°C
             </div>
 
-            <div className="text-lg font-medium text-purple-700">
+            <div className="text-lg font-medium text-brand-accent">
               {weather.city}
             </div>
           </div>
@@ -81,7 +77,7 @@ export default function Home() {
       </div>
 
       {/* TITLE */}
-      <h2 className="text-3xl font-bold text-center mt-16 text-purple-700">
+      <h2 className="text-3xl font-bold text-center mt-16 text-brand-primary">
         Dicas de Looks
       </h2>
 

@@ -70,7 +70,7 @@ export function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="px-4 py-2 text-sm bg-black text-white rounded-full hover:opacity-90 transition"
+              className="px-4 py-2 text-sm bg-brand-primary text-white rounded-full hover:opacity-90 transition"
             >
               Entrar
             </Link>

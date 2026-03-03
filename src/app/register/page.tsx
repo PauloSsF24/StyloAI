@@ -25,13 +25,13 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-md w-96 space-y-4"
+        className="bg-brand-accent p-8 rounded-2xl shadow-md w-96 space-y-4"
       >
-        <h1 className="text-2xl font-bold text-center text-black">Cadastro</h1>
+        <h1 className="text-2xl font-bold text-center text-brand-background">Cadastro</h1>
 
         <input
           placeholder="Nome"
-          className="w-full border p-2 rounded-lg text-black"
+          className="w-full border p-2 rounded-lg text-brand-background"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -40,7 +40,7 @@ export default function RegisterPage() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full border p-2 rounded-lg text-black"
+          className="w-full border p-2 rounded-lg text-brand-background"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -49,7 +49,7 @@ export default function RegisterPage() {
         <input
           type="password"
           placeholder="Senha"
-          className="w-full border p-2 rounded-lg text-black"
+          className="w-full border p-2 rounded-lg text-brand-background"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -57,7 +57,7 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 rounded-lg"
+          className="w-full bg-brand-primary text-brand-background font-bold py-2 rounded-lg"
         >
           Criar Conta
         </button>

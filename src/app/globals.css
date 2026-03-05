@@ -3,10 +3,10 @@
 /* 🔥 Definindo sua paleta no Tailwind v4 */
 
 @theme {
-  --color-brand-background: #1d1716;
-  --color-brand-surface: #402a23;
-  --color-brand-primary: #a55233;
-  --color-brand-accent: #f3bc77;
+  --color-brand-background: #262220 !important;
+  --color-brand-surface: #a15c38 !important;
+  --color-brand-primary: #c3a6a0 !important;
+  --color-brand-accent: #f7f1f0 !important;
 }
 
 /* Reset básico */

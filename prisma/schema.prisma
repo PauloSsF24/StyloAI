@@ -7,13 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Climate {
+  Ensolarado
+  Chuva
+  Nublado
+  Frio
+}
+
+enum Occasion {
+  Casual
+  Formal
+  Trabalho
+  Academia
+  Festa
+}
+
 model Look {
   id          String   @id @default(uuid())
   imageUrl    String
   nome    String
-  clima     String   // cold | mild | hot
-  ocasiao    String   // casual | formal | work
+  clima     Climate
+  ocasiao    Occasion
   lastUsedAt  DateTime?
+  minTemp     Int?
+  maxTemp     Int?
   rating      Int      @default(0)
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

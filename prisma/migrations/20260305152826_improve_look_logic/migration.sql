@@ -1,11 +1,25 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Climate" AS ENUM ('Ensolarado', 'Chuva', 'Nublado', 'Frio');
 
-  - Added the required column `userId` to the `Look` table without a default value. This is not possible if the table is not empty.
+-- CreateEnum
+CREATE TYPE "Occasion" AS ENUM ('Casual', 'Formal', 'Trabalho', 'Academia', 'Festa');
 
-*/
--- AlterTable
-ALTER TABLE "Look" ADD COLUMN     "userId" TEXT NOT NULL;
+-- CreateTable
+CREATE TABLE "Look" (
+    "id" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+    "nome" TEXT NOT NULL,
+    "clima" "Climate" NOT NULL,
+    "ocasiao" "Occasion" NOT NULL,
+    "lastUsedAt" TIMESTAMP(3),
+    "minTemp" INTEGER,
+    "maxTemp" INTEGER,
+    "rating" INTEGER NOT NULL DEFAULT 0,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Look_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "User" (

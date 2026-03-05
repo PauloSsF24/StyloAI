@@ -47,7 +47,7 @@ export default function Home() {
         }
 
         const looksRes = await fetch(
-          `/api/looks/recommended?temp=${weatherData.temperature}&occasion=casual`
+          `/api/looks/recommended?temp=${weatherData.temperature}&occasion=casual&condition=${weatherData.condition}`
         );
 
         const looksData = await looksRes.json();

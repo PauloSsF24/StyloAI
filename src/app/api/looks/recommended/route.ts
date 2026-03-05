@@ -1,10 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-function getClimate(temp: number) {
-  if (temp <= 18) return "cold";
-  if (temp <= 26) return "mild";
-  return "hot";
+function normalizeWeather(condition: string) {
+  if (!condition) return "Ensolarado";
+
+  const c = condition.toLowerCase();
+
+  if (c.includes("rain")) return "Chovendo";
+  if (c.includes("cloud")) return "Nublado";
+  if (c.includes("snow")) return "Neve";
+
+  return "Ensolarado";
 }
 
 export async function GET(req: Request) {
@@ -12,36 +18,72 @@ export async function GET(req: Request) {
 
   const temp = Number(searchParams.get("temp"));
   const occasion = searchParams.get("occasion") || "casual";
+  const condition = normalizeWeather(
+    searchParams.get("condition") || "Ensolarado"
+  );
 
-  const climate = getClimate(temp);
+  if (!temp) {
+    return NextResponse.json(
+      { error: "Temperatura inválida" },
+      { status: 400 }
+    );
+  }
 
-  const looks = await prisma.look.findMany();
+  try {
+    const looks = await prisma.look.findMany();
 
-  const scored = looks.map((look) => {
-    let score = 0;
+    const scored = looks
+      .filter((look) => {
+        // 🎯 filtro de temperatura
+        if (look.minTemp !== null && temp < look.minTemp) return false;
+        if (look.maxTemp !== null && temp > look.maxTemp) return false;
+        return true;
+      })
+      .map((look) => {
+        let score = 0;
 
-    // 🎯 Clima (peso alto)
-    if (look.climate === climate) score += 40;
+        // 🎯 ocasião (prioridade alta)
+        if (look.ocasiao === occasion) {
+          score += 40;
+        }
 
-    // 🎯 Ocasião
-    if (look.occasion === occasion) score += 30;
+        // 🎯 clima
+        if (look.clima === condition) {
+          score += 30;
+        }
 
-    // 🎯 Não usado recentemente (7 dias)
-    if (
-      !look.lastUsedAt ||
-      Date.now() - new Date(look.lastUsedAt).getTime() >
-        7 * 24 * 60 * 60 * 1000
-    ) {
-      score += 20;
-    }
+        // 🎯 evitar repetir ontem
+        if (look.lastUsedAt) {
+          const diff =
+            Date.now() -
+            new Date(look.lastUsedAt).getTime();
 
-    // 🎯 Avaliação
-    score += look.rating * 2;
+          const oneDay = 24 * 60 * 60 * 1000;
 
-    return { ...look, score };
-  });
+          if (diff < oneDay) {
+            score -= 50;
+          }
+        }
 
-  scored.sort((a, b) => b.score - a.score);
+        // 🎯 rating (desempate)
+        score += look.rating;
 
-  return NextResponse.json(scored.slice(0, 5));
+        return { ...look, score };
+      });
+
+    // ordenar
+    scored.sort((a, b) => b.score - a.score);
+
+    // pegar top 5
+    const result = scored.slice(0, 5);
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { error: "Erro ao buscar recomendações" },
+      { status: 500 }
+    );
+  }
 }
